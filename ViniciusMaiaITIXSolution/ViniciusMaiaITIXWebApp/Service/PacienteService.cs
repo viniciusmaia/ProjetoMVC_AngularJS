@@ -1,4 +1,5 @@
-﻿using ViniciusMaiaITIXWebApp.DAO.Interfaces;
+﻿using System;
+using ViniciusMaiaITIXWebApp.DAO.Interfaces;
 using ViniciusMaiaITIXWebApp.Models;
 
 namespace ViniciusMaiaITIXWebApp.Service

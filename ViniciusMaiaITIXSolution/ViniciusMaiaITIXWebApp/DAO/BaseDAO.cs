@@ -8,14 +8,14 @@ namespace ViniciusMaiaITIXWebApp.DAO
 {
     public abstract class BaseDAO<TModel> : IDAO<TModel> where TModel : BaseModel
     {
-        private ISession _session;
+        protected ISession _session;
 
         public BaseDAO(ISession session)
         {
             _session = session;
         }
 
-        public int Atualiza(TModel model)
+        public virtual int Atualiza(TModel model)
         {
             using (ITransaction transaction = _session.BeginTransaction())
             {
@@ -26,13 +26,13 @@ namespace ViniciusMaiaITIXWebApp.DAO
             return model.Id.Value;
         }
 
-        public TModel BuscaPorId(int id)
+        public virtual TModel BuscaPorId(int id)
         {
             var model = _session.Get<TModel>(id);
             return model;
         }
 
-        public int Insere(TModel model)
+        public virtual int Insere(TModel model)
         {
             using (ITransaction transaction = _session.BeginTransaction())
             {
@@ -43,12 +43,12 @@ namespace ViniciusMaiaITIXWebApp.DAO
             return model.Id.Value;
         }
 
-        public IList<TModel> ListaTodos()
+        public virtual IList<TModel> ListaTodos()
         {
             return _session.Query<TModel>().ToList();
         }
 
-        public void Remove(int id)
+        public virtual void Remove(int id)
         {
             using (ITransaction transaction = _session.BeginTransaction())
             {

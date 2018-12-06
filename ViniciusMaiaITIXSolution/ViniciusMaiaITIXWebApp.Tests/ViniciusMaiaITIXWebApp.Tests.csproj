@@ -132,7 +132,7 @@
     <Compile Include="DAOs\SessionTestFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
-    <Compile Include="Services\PacienteServiceTest.cs" />
+    <Compile Include="Services\ConsultaServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

@@ -5,6 +5,7 @@ using ViniciusMaiaITIXWebApp.DAO;
 using ViniciusMaiaITIXWebApp.Service;
 using ViniciusMaiaITIXWebApp.Models;
 using NHibernate;
+using ViniciusMaiaITIXWebApp.DAO.Interfaces;
 
 namespace ViniciusMaiaITIXWebApp.Tests.Services
 {
@@ -15,11 +16,10 @@ namespace ViniciusMaiaITIXWebApp.Tests.Services
         
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void NomeDoPacienteNaoPodeSerNuloOuVazio()
         {
-            var session = new Mock<ISession>();
-            var pacienteDao = new Mock<PacienteDAO>(session.Object);
+            var pacienteDao = new Mock<IPacienteDAO>();
             var pacienteService = new PacienteService(pacienteDao.Object);
 
             var pacienteNomeVazio = new Paciente
