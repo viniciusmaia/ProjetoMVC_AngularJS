@@ -33,20 +33,47 @@ namespace ViniciusMaiaITIXWebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Salva(Paciente paciente)
-        {
-            _service.Salva(paciente);
-            return List();
-        }
-
-        [HttpPost]
         public JsonResult AdicionaPaciente(Paciente paciente)
         {
             try
             {
-                _service.Salva(paciente);
+                if (!string.IsNullOrWhiteSpace(paciente.Nome) && paciente.DataNascimento != null)
+                {
+                    _service.Salva(paciente);
 
-                return Json(new { success = true });
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    throw new Exception("Preencha os campos \"Nome\" e \"Data de Nascimento\"");
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = e.Message
+                });
+            }
+        }
+        
+        [HttpGet]
+        public ActionResult Editar(int id)
+        {
+            var paciente = _service.BuscaPorId(id);
+
+            return View("Edit", paciente);
+        }
+
+        [HttpPost]
+        public JsonResult RemovePaciente(Paciente paciente)
+        {
+            try
+            {
+                _service.Remove(paciente);
+
+                return Json(new { success = true } );
             }
             catch (Exception e)
             {

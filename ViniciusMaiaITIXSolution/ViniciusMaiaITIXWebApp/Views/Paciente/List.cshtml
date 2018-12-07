@@ -2,10 +2,6 @@
     ViewBag.Title = "Pacientes";
 }
 
-<script>
-    var MvcModel = @Html.Raw(Json.Encode(Model))
-</script>
-
 <div class="container" ng-controller="pacienteController">
 
     <div class="row" style="padding-left: 15px; padding-top: 50px;">
@@ -28,10 +24,10 @@
                     <td>{{paciente.Nome}}</td>
                     <td>{{paciente.DataNascimento.slice(6, -2) | date:'dd/MM/yyyy'}}</td>
                     <td style="width: 130px;">
-                        <a href="#" class="btn btn-info">
+                        <a href="#" class="btn btn-info" ng-click="redirecionaParaEdicao(paciente)">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
-                        <a href="#" class="btn btn-danger">
+                        <a href="#" class="btn btn-danger" ng-click="removePaciente(paciente)">
                             <span class="glyphicon glyphicon-trash"></span>
                         </a>
                     </td>

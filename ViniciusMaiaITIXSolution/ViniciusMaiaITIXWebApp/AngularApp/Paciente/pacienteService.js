@@ -13,13 +13,13 @@
         return request;
     }
 
-    //this.adicionaPaciente = function (paciente) {
-    //    var request = $http({
-    //        method: 'post',
-    //        url: '/Paciente/AdicionaPaciente',
-    //        data: paciente
-    //    });
+    this.removePaciente = function (paciente) {
+        var request = $http({
+            url: '/Paciente/RemovePaciente',
+            method: 'POST',
+            data: paciente
+        });
 
-    //    return request;
-    //}
+        return request;
+    }
 });
