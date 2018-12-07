@@ -226,6 +226,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ConsultaController.cs" />
     <Compile Include="Controllers\PacienteController.cs" />
     <Compile Include="DAO\BaseDAO.cs" />
     <Compile Include="DAO\ConsultaDAO.cs" />
@@ -255,6 +256,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AngularApp\Consulta\consultaController.js" />
+    <Content Include="AngularApp\Consulta\consultaService.js" />
     <Content Include="AngularApp\Paciente\pacienteController.js" />
     <Content Include="AngularApp\Paciente\pacienteService.js" />
     <Content Include="AngularApp\webapp.js" />
@@ -324,6 +327,8 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Paciente\Edit.cshtml" />
     <Content Include="Views\Paciente\List.cshtml" />
+    <Content Include="Views\Consulta\Edit.cshtml" />
+    <Content Include="Views\Consulta\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

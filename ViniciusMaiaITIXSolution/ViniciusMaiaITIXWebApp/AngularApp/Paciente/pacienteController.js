@@ -7,7 +7,10 @@
     function _init(paciente) {
         $scope.Id = paciente.Id;
         $scope.Nome = paciente.Nome;
-        $scope.DataNascimento = new Date(parseInt(paciente.DataNascimento.slice(6, -2)));
+
+        if (typeof consulta.DataNascimento !== 'undefined' && consulta.DataHorainicio !== null) {
+            $scope.DataNascimento = new Date(parseInt(consulta.DataNascimento.slice(6, -2)));
+        }
     }
 
     carregarPacientes();
