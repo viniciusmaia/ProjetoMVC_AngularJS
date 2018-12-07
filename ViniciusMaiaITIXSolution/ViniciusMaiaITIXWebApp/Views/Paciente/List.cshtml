@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Pacientes";
+}
+
+<script>
+    var MvcModel = @Html.Raw(Json.Encode(Model))
+</script>
+
+<div class="container" ng-controller="pacienteController">
+
+    <div class="row" style="padding-left: 15px; padding-top: 50px;">
+        <p>
+            @Html.ActionLink("Adicionar Paciente", "Novo", null, new { @class = "btn btn-primary" })
+        </p>
+    </div>
+    <div class="panel panel-default" style="margin-top: 10px;">
+        <div class="panel-heading">Pacientes</div>
+        <table class="table table-bordered">
+            <thead style="background-color: #f5f5f5;">
+                <tr>
+                    <th>Nome</th>
+                    <th>Data de Nascimento</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="paciente in Pacientes">
+                    <td>{{paciente.Nome}}</td>
+                    <td>{{paciente.DataNascimento.slice(6, -2) | date:'dd/MM/yyyy'}}</td>
+                    <td style="width: 130px;">
+                        <a href="#" class="btn btn-info">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a href="#" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/AngularApp/webapp.js"></script>
+    <script src="~/AngularApp/Paciente/pacienteService.js"></script>
+    <script src="~/AngularApp/Paciente/pacienteController.js"></script>
+}

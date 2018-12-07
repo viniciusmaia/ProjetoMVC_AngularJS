@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E330415F-3721-4BD8-B65C-E56D658B8AC6}</ProjectGuid>
+    <ProjectGuid>{004CBCB1-E9B1-4086-A2F3-2D37FE040FD1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ViniciusMaiaITIXWebApp.Tests</RootNamespace>
@@ -51,9 +51,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=4.10.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.10.1\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -142,7 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ViniciusMaiaITIXWebApp\ViniciusMaiaITIXWebApp.csproj">
-      <Project>{11C8D93C-7144-4FA2-913C-2A8D4288551B}</Project>
+      <Project>{3D65232B-68B9-4407-A2A5-79EDF9BD278C}</Project>
       <Name>ViniciusMaiaITIXWebApp</Name>
     </ProjectReference>
   </ItemGroup>
