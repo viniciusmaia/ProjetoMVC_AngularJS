@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConsultaControllerTest.cs" />
+    <Compile Include="Controllers\PacienteControllerTest.cs" />
     <Compile Include="DAOs\ConsultaDAOTest.cs" />
     <Compile Include="DAOs\PacienteDAOTest.cs" />
     <Compile Include="DAOs\SessionTestFactory.cs" />
