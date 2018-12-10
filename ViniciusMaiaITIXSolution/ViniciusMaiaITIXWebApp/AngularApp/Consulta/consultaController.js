@@ -1,23 +1,28 @@
-﻿globalApp.controller('consultaController', function ($scope, consultaService) {
+﻿globalApp.controller('consultaController', function ($scope, $filter, consultaService) {
 
-    if (typeof window.consulta !== 'undefined') {
-        _init(window.consulta);
+    if (typeof window.viewModel !== 'undefined') {
+        _init(window.viewModel);
     }
 
-    function _init(consulta) {
-        $scope.Id = consulta.Id;
-        $scope.Paciente = consulta.Paciente;
-        $scope.IdPaciente = consulta.IdPaciente
+    function _init(viewModel) {
+        $scope.IdConsulta = viewModel.IdConsulta;
+        $scope.Paciente = viewModel.Paciente;
 
-        if (typeof consulta.DataHorainicio !== 'undefined' && consulta.DataHorainicio !== null) {
-            $scope.DataHorainicio = new Date(parseInt(consulta.DataHorainicio.slice(6, -2)));
+        console.log($scope.Paciente);
+
+        if (typeof viewModel.DataDaConsulta !== 'undefined' && viewModel.DataDaConsulta !== null) {
+            $scope.DataDaConsulta = new Date(parseInt(viewModel.DataDaConsulta.slice(6, -2)));
         }
 
-        if (typeof consulta.DataHoraFim !== 'undefined' && consulta.DataHoraFim !== null) {
-            $scope.DataHoraFim = new Date(parseInt(consulta.DataHoraFim.slice(6, -2)));
+        if (typeof viewModel.HoraInicio !== 'undefined' && viewModel.HoraInicio !== null) {
+            $scope.HoraInicio = new Date(parseInt(viewModel.HoraInicio.slice(6, -2)));
         }
 
-        $scope.Observacoes = consulta.Observacoes;
+        if (typeof viewModel.HoraFim !== 'undefined' && viewModel.HoraFim !== null) {
+            $scope.HoraFim = new Date(parseInt(viewModel.HoraFim.slice(6, -2)));
+        }
+
+        $scope.Observacoes = viewModel.Observacoes;
     }
 
     carregarPacientes();
@@ -26,6 +31,21 @@
 
         listarPacientes.then(function (d) {
             $scope.ListaPacientes = d.data;
+
+            if ($scope.Paciente !== null) {
+                $scope.Paciente = $scope.ListaPacientes.find(function () {
+                    var pacienteSelecionado = null;
+
+                    for (var i = 0; i < $scope.ListaPacientes.length; i++) {
+                        if ($scope.Paciente.Id === $scope.ListaPacientes[i].Id) {
+                            pacienteSelecionado = $scope.ListaPacientes[i];
+                            break;
+                        }
+                    }
+
+                    return pacienteSelecionado;
+                })
+            }
         },
         function (d) {
             alert("Falha ao listar todos os pacientes.");
@@ -48,17 +68,19 @@
 
     $scope.salvaConsulta = function () {
 
-        console.log("Data Inicio: " + $scope.DataHorainicio);
-        console.log("Data Fim: " + $scope.DataHoraFim);
+        console.log($scope.HoraInicio);
+        console.log($scope.HoraFim);
 
-        var consulta = {
-            Id: $scope.Id,
+        var viewModel = {
+            IdConsulta: $scope.IdConsulta,
             Paciente: $scope.Paciente,
-            DataHorainicio: $scope.DataHorainicio,
-            DataHoraFim: $scope.DataHoraFim,
+            DataDaConsulta: $scope.DataDaConsulta,
+            HoraInicio: $scope.HoraInicio.toLocaleString(),
+            HoraFim: $scope.HoraFim.toLocaleString(),
             Observacoes: $scope.Observacoes
         }
-        var adicionarInformacoesConsulta = consultaService.salvaConsulta(consulta);
+
+        var adicionarInformacoesConsulta = consultaService.salvaConsulta(viewModel);
 
         adicionarInformacoesConsulta.then(function (d) {
             if (d.data.success === true) {
@@ -67,11 +89,12 @@
                 alert("Consulta salva com sucesso!");
             }
             else {
-                alert(d.data.errorMessage);
+                console.log(d.data.mensagensErro);
+                $scope.mensagensDeErro = d.data.mensagensErro;
             }
         },
         function (d) {
-            alert("Falha ao adicionar consulta.");
+            $scope.mensagensDeErro = ["Ocorreu um erro inesperado ao salvar a consulta."];
         });
     };
 
@@ -104,9 +127,14 @@
         window.location.href = '/Consulta/List';
     }
 
-    function limpaDadosConsulta(){
-        $scope.Id = null;
-        $scope.Nome = null;
-        $scope.DataNascimento = null;
+    function limpaDadosConsulta() {
+        $scope.mensagensDeErro = null;
+        $scope.IdConsulta = null;
+        $scope.Paciente = null;
+        $scope.DataDaConsulta = null;
+        $scope.Horainicio = null;
+        $scope.HoraFim = null;
+        $scope.Observacoes = null;
+        $scope.ListaPacientes = null;
     }
 });

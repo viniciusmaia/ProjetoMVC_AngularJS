@@ -37,13 +37,33 @@ namespace ViniciusMaiaITIXWebApp.Tests.Services
             var dataHoraInicio = new DateTime(2018, 1, 2, 15, 0, 0);
             var dataHoraFim = new DateTime(2018, 1, 2, 15, 30, 0);
 
-            consultaDao.Setup(dao => dao.ExisteAgendamentoNesseHorario(dataHoraInicio, dataHoraFim)).Returns(true);
+            consultaDao.Setup(dao => dao.ExisteAgendamentoNesseHorario(null, dataHoraInicio, dataHoraFim)).Returns(true);
 
             var consulta = new Consulta
             {
                 DataHoraFim = dataHoraFim,
                 DataHoraInicio = dataHoraInicio,
                 IdPaciente = 1
+            };
+
+            consultaService.Salva(consulta);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void DataHoraDaConsultaNaoPodeSerMenorQueDataHoraAtual()
+        {
+            var consultaDao = new Mock<IConsultaDAO>();
+            var consultaService = new ConsultaService(consultaDao.Object);
+
+            var dataHoraInicio = DateTime.Now.AddHours(-1);
+            var dataHoraFim = dataHoraInicio.AddMinutes(30);
+
+            var consulta = new Consulta
+            {
+                IdPaciente = 1,
+                DataHoraFim = dataHoraFim,
+                DataHoraInicio = dataHoraInicio
             };
 
             consultaService.Salva(consulta);

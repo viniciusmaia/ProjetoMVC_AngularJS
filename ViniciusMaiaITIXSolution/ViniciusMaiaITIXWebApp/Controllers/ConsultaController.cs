@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using ViniciusMaiaITIXWebApp.Models;
 using ViniciusMaiaITIXWebApp.Service;
+using ViniciusMaiaITIXWebApp.ViewModel;
 
 namespace ViniciusMaiaITIXWebApp.Controllers
 {
@@ -33,46 +35,88 @@ namespace ViniciusMaiaITIXWebApp.Controllers
         {
             IList<Consulta> listaConsultas = _consultaService.ListaTodos();
 
+            foreach (var consulta in listaConsultas)
+            {
+                consulta.Paciente = _pacienteService.BuscaPorId(consulta.IdPaciente.Value);
+            }
+
             return Json(listaConsultas, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Novo()
         {
-            return View("Edit", new Consulta());
+            return View("Edit", new ConsultaViewModel());
         }
 
         [HttpPost]
-        public JsonResult AdicionaConsulta(Consulta consulta)
+        public JsonResult SalvaConsulta(ConsultaViewModel viewModel)
         {
             try
             {
-                if (consulta.Paciente != null && consulta.DataHoraInicio != null && consulta.DataHoraFim != null)
+                IList<string> mensagensDeErro = ValidaViewModel(viewModel);
+
+                if (mensagensDeErro.Count == 0)
                 {
+                   
+                    var consulta = viewModel.ToModel();
                     _consultaService.Salva(consulta);
 
                     return Json(new { success = true });
                 }
-                else
-                {
-                    throw new Exception("Preencha os campos \"Paciente\" e \"Data/Hora Início\" e \"Data/Hora Fim\"");
-                }
-            }
-            catch (Exception e)
-            {
+
                 return Json(new
                 {
                     success = false,
-                    errorMessage = e.Message
+                    mensagensErro = mensagensDeErro
                 });
             }
+            catch (Exception e)
+            {
+                string[] erros = e.Message.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                return Json(new
+                {
+                    success = false,
+                    mensagensErro = erros
+                });
+            }
+        }
+
+        private IList<string> ValidaViewModel(ConsultaViewModel viewModel)
+        {
+            IList<string> mensagensDeErro = new List<string>();
+
+            if (viewModel.Paciente == null)
+            {
+                mensagensDeErro.Add("Selecione o paciente.");
+            }
+
+            if (viewModel.DataDaConsulta == null)
+            {
+                mensagensDeErro.Add("Informe a data da consulta.");
+            }
+
+            if (viewModel.HoraInicio == null)
+            {
+                mensagensDeErro.Add("Informe a hora do início da consulta.");
+            }
+
+            if (viewModel.HoraFim == null)
+            {
+                mensagensDeErro.Add("Informe a hora final da consulta.");
+            }
+
+            return mensagensDeErro;
         }
         
         [HttpGet]
         public ActionResult Editar(int id)
         {
-            var consulta = _consultaService.BuscaPorId(id);
+            Consulta consulta = _consultaService.BuscaPorId(id);
+            var viewModel = new ConsultaViewModel(consulta);
+            viewModel.Paciente = _pacienteService.BuscaPorId(consulta.IdPaciente.Value);
 
-            return View("Edit", consulta);
+            return View("Edit", viewModel);
         }
 
         [HttpPost]

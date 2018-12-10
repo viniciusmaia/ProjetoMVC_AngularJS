@@ -15,8 +15,9 @@
             <thead style="background-color: #f5f5f5;">
                 <tr>
                     <th>Paciente</th>
-                    <th>Data/Hora Início</th>
-                    <th>Data/Hora Fim</th>
+                    <th>Data da Consulta</th>
+                    <th>Hora Início</th>
+                    <th>Hora Fim</th>
                     <th>Observações</th>
                     <th>Ações</th>
                 </tr>
@@ -24,8 +25,9 @@
             <tbody>
                 <tr ng-repeat="consulta in Consultas">
                     <td>{{consulta.Paciente.Nome}}</td>
-                    <td>{{consulta.DataHoraInicio.slice(6, -2) | date:'dd/MM/yyyy hh:mm'}}</td>
-                    <td>{{consulta.DataHoraFim.slice(6, -2) | date:'dd/MM/yyyy hh:mm'}}</td>
+                    <td>{{consulta.DataHoraInicio.slice(6, -2) | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{consulta.DataHoraInicio.slice(6, -2) | date:'HH:mm'}}</td>
+                    <td>{{consulta.DataHoraFim.slice(6, -2) | date:'HH:mm'}}</td>
                     <td>{{consulta.Observacoes}}</td>
                     <td style="width: 130px;">
                         <a href="#" class="btn btn-info" ng-click="redirecionaParaEdicao(consulta)">

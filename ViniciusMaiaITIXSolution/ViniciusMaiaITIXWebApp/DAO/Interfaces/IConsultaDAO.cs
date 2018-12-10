@@ -5,6 +5,6 @@ namespace ViniciusMaiaITIXWebApp.DAO.Interfaces
 {
     public interface IConsultaDAO : IDAO<Consulta>
     {
-        bool ExisteAgendamentoNesseHorario(DateTime dataHoraInicio, DateTime dataHoraFim);
+        bool ExisteAgendamentoNesseHorario(int? idConsulta, DateTime dataHoraInicio, DateTime dataHoraFim);
     }
 }

@@ -7,11 +7,11 @@
         return $http.get("/Consulta/ListarConsultas");
     }
 
-    this.salvaConsulta = function (consulta) {
+    this.salvaConsulta = function (viewModel) {
         var request = $http({
             method: 'POST',
-            url: '/Consulta/AdicionaConsulta',
-            data: consulta
+            url: '/Consulta/SalvaConsulta',
+            data: viewModel
         });
 
         return request;

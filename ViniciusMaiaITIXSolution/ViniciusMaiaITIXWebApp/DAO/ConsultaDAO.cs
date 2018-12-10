@@ -1,5 +1,6 @@
 ﻿using NHibernate;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using ViniciusMaiaITIXWebApp.DAO.Interfaces;
 using ViniciusMaiaITIXWebApp.Models;
@@ -12,11 +13,23 @@ namespace ViniciusMaiaITIXWebApp.DAO
         {
         }
 
-        public bool ExisteAgendamentoNesseHorario(DateTime dataHoraInicio, DateTime dataHoraFim)
+        public bool ExisteAgendamentoNesseHorario(int? idConsulta, DateTime dataHoraInicio, DateTime dataHoraFim)
         {
-            var consultasComHorarioEmConflito = _session.Query<Consulta>().Where(c =>
+            var query = _session.Query<Consulta>().Where(c =>
                                                         (dataHoraInicio >= c.DataHoraInicio && dataHoraInicio < c.DataHoraFim) ||
-                                                        (dataHoraFim > c.DataHoraInicio && dataHoraFim <= c.DataHoraFim)).ToList();
+                                                        (dataHoraFim > c.DataHoraInicio && dataHoraFim <= c.DataHoraFim));
+
+            IList<Consulta> consultasComHorarioEmConflito = null;
+
+            if (idConsulta != null)
+            {
+                consultasComHorarioEmConflito = query.Where(c => c.Id.Value != idConsulta.Value).ToList();
+            }
+            else
+            {
+                consultasComHorarioEmConflito = query.ToList();
+            }
+
 
             return consultasComHorarioEmConflito != null && consultasComHorarioEmConflito.Count > 0;
         }

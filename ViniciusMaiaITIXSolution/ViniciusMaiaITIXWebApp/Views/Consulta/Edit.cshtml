@@ -1,38 +1,46 @@
-﻿@model ViniciusMaiaITIXWebApp.Models.Consulta
+﻿@model ViniciusMaiaITIXWebApp.ViewModel.ConsultaViewModel
 
 @{
     ViewBag.Title = "Consulta";
 }
 
 <script>
-    var consulta = @Html.Raw(Json.Encode(Model));
+    var viewModel = @Html.Raw(Json.Encode(Model));
 </script>
 
 <h2>Consulta</h2>
 <div ng-controller="consultaController" style="margin-top: 30px;">
     <form name="EditForm">
-        <input type="hidden" name="Id" value="{{Id}}"/>
-        <div class="row">
+        <input type="hidden" name="Id" value="{{IdConsulta}}"/>
+        <div class="row" style="padding-left: 15px;">
             <input type="submit" class="btn btn-success" ng-click="salvaConsulta()" value="Salvar" />
             @Html.ActionLink("Voltar para lista", "List", null, new { @class = "btn btn-primary" })
         </div>
+        <div ng-repeat="mensagemDeErro in mensagensDeErro" class="alert alert-danger fade in alert-dismissible" style="margin-top: 15px;">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+            <strong>{{mensagemDeErro}}</strong>
+        </div>
         <div class="form-group" style="margin-top: 20px;">
             <label for="inputPaciente">Paciente</label>
-            <select data-ng-model="Paciente" data-ng-options="p as p.Nome for p in ListaPacientes" class="form-control">
+            <select ng-model="Paciente" class="form-control" ng-options="paciente as paciente.Nome for paciente in ListaPacientes">
                 <option value="">Selecione o paciente</option>
             </select>
         </div>
         <div class="form-group">
-            <label for="inputDataHoraInicio">Data/Hora Início</label>
-            <input type="datetime-local" class="form-control" id="inputDataHoraInicio" ng-model="DataHoraInicio"/>
+            <label for="inputData">Data</label>
+            <input type="date" class="form-control" id="inputData" ng-model="DataDaConsulta" />
         </div>
         <div class="form-group">
-            <label for="inputDataHoraFim">Data/Hora Fim</label>
-            <input type="datetime-local" class="form-control" id="inputDataHoraFim" ng-model="DataHoraFim" />
+            <label for="inputHoraInicio">Hora Início</label>
+            <input type="time" class="form-control" id="inputHoraInicio" ng-model="HoraInicio"/>
+        </div>
+        <div class="form-group">
+            <label for="inputHoraFim">Hora Fim</label>
+            <input type="time" class="form-control" id="inputHoraFim" ng-model="HoraFim" />
         </div>
         <div class="form-group">
             <label for="inputObservacoes">Observações</label>
-            <textarea rows="4" id="inputObservacoes" class="form-control" ng-model="Observacoes"></textarea>
+            <textarea rows="4" id="inputObservacoes" class="form-control" ng-model="Observacoes" maxlength="200"></textarea>
         </div>
     </form>
 </div>

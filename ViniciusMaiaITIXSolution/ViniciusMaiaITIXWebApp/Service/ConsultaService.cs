@@ -25,12 +25,17 @@ namespace ViniciusMaiaITIXWebApp.Service
         {
             var mensagemErroBuilder = new StringBuilder();
 
-            if (consulta.DataHoraFim.Value.CompareTo(consulta.DataHoraInicio.Value) <= 0)
+            if (consulta.DataHoraInicio.Value < DateTime.Now || consulta.DataHoraFim < DateTime.Now)
             {
-                mensagemErroBuilder.Append("O horário do final da consulta deve ser maior que o horário do início.");
+                mensagemErroBuilder.Append("A data e o horário da consulta não podem ser menores que a data e o horário atual.");
                 mensagemErroBuilder.Append("\n");
             }
-            else if (_dao.ExisteAgendamentoNesseHorario(consulta.DataHoraInicio.Value, consulta.DataHoraFim.Value))
+            if (consulta.DataHoraFim.Value.CompareTo(consulta.DataHoraInicio.Value) <= 0)
+            {
+                mensagemErroBuilder.Append("A hora fim da consulta deve ser maior que o hora início.");
+                mensagemErroBuilder.Append("\n");
+            }
+            if (_dao.ExisteAgendamentoNesseHorario(consulta.Id, consulta.DataHoraInicio.Value, consulta.DataHoraFim.Value))
             {
                 mensagemErroBuilder.Append("O horário da consulta está em conflito com um agendamento já existente.");
                 mensagemErroBuilder.Append("\n");

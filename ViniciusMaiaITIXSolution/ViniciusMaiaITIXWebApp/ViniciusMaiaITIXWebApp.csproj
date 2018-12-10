@@ -254,6 +254,7 @@
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\PacienteService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\ConsultaViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AngularApp\Consulta\consultaController.js" />

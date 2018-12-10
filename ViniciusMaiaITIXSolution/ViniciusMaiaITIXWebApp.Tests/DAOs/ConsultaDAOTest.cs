@@ -183,7 +183,7 @@ namespace ViniciusMaiaITIXWebApp.Tests.DAOs
             var dataHoraInicio = new DateTime(2019, 1, 2, 12, 15, 0);
             var dataHoraFim = new DateTime(2019, 1, 2, 12, 45, 0);
 
-            bool existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(dataHoraInicio, dataHoraFim);
+            bool existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(null, dataHoraInicio, dataHoraFim);
 
             Assert.IsTrue(existeAgendamento);
 
@@ -216,7 +216,7 @@ namespace ViniciusMaiaITIXWebApp.Tests.DAOs
             var dataHoraInicio = new DateTime(2019, 1, 2, 11, 30, 0);
             var dataHoraFim = new DateTime(2019, 1, 2, 12, 15, 0);
 
-            bool existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(dataHoraInicio, dataHoraFim);
+            bool existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(null, dataHoraInicio, dataHoraFim);
 
             Assert.IsTrue(existeAgendamento);
 
@@ -249,19 +249,50 @@ namespace ViniciusMaiaITIXWebApp.Tests.DAOs
             var dataHoraInicioParaAgendamentoAnterior = new DateTime(2019, 1, 2, 11, 30, 0);
             var dataHoraFimParaAgendamentoAnterior = new DateTime(2019, 1, 2, 12, 00, 0);
 
-            bool existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(dataHoraInicioParaAgendamentoAnterior, dataHoraFimParaAgendamentoAnterior);
+            bool existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(null, dataHoraInicioParaAgendamentoAnterior, dataHoraFimParaAgendamentoAnterior);
 
             Assert.IsTrue(!existeAgendamento);
 
             var dataHoraInicioParaAgendamentoPosterior = new DateTime(2019, 1, 2, 11, 30, 0);
             var dataHoraFimParaAgendamentoPosterior = new DateTime(2019, 1, 2, 12, 00, 0);
 
-            existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(dataHoraInicioParaAgendamentoPosterior, dataHoraFimParaAgendamentoPosterior);
+            existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(null, dataHoraInicioParaAgendamentoPosterior, dataHoraFimParaAgendamentoPosterior);
 
             Assert.IsTrue(!existeAgendamento);
 
             _consultaDAO.Remove(idPrimeiraConsulta);
         }
 
+
+
+        [TestMethod]
+        public void ValidaHorario_ConsultaExistente_NaoAlteraHorario()
+        {
+            var paciente = new Paciente
+            {
+                Nome = @"Paciente criado em " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss") +
+                        " para testar valiação de horário de uma consulta.",
+                DataNascimento = DateTime.Now.AddDays(-1)
+            };
+
+            var idPaciente = _pacienteDAO.Insere(paciente);
+
+            var consulta = new Consulta
+            {
+                DataHoraInicio = new DateTime(2019, 1, 2, 12, 0, 0),
+                DataHoraFim = new DateTime(2019, 1, 2, 12, 30, 0),
+                Observacoes = "Nova Consulta",
+                Paciente = paciente,
+                IdPaciente = paciente.Id
+            };
+
+            var idPrimeiraConsulta = _consultaDAO.Insere(consulta);
+
+            bool existeAgendamento = _consultaDAO.ExisteAgendamentoNesseHorario(consulta.Id, consulta.DataHoraInicio.Value, consulta.DataHoraFim.Value);
+
+            Assert.IsTrue(!existeAgendamento);
+
+            _consultaDAO.Remove(consulta.Id.Value);
+        }
     }
 }
