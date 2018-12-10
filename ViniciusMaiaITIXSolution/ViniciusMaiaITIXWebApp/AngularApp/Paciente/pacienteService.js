@@ -6,7 +6,7 @@
     this.salvaPaciente = function (paciente) {
         var request = $http({
             method: 'POST',
-            url: '/Paciente/AdicionaPaciente',
+            url: '/Paciente/SalvaPaciente',
             data: paciente
         });
 

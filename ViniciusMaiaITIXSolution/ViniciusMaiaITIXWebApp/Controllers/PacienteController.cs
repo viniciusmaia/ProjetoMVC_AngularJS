@@ -33,31 +33,54 @@ namespace ViniciusMaiaITIXWebApp.Controllers
         }
 
         [HttpPost]
-        public JsonResult AdicionaPaciente(Paciente paciente)
+        public JsonResult SalvaPaciente(Paciente paciente)
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(paciente.Nome) && paciente.DataNascimento != null)
+                IList<string> mensagensDeErro = ValidaPaciente(paciente);
+
+                if (mensagensDeErro.Count == 0)
                 {
                     _service.Salva(paciente);
 
                     return Json(new { success = true });
                 }
-                else
-                {
-                    throw new Exception("Preencha os campos \"Nome\" e \"Data de Nascimento\"");
-                }
-            }
-            catch (Exception e)
-            {
+
                 return Json(new
                 {
                     success = false,
-                    errorMessage = e.Message
+                    mensagensErro = mensagensDeErro
+                });
+            }
+            catch (Exception e)
+            {
+                string[] erros = e.Message.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                return Json(new
+                {
+                    success = false,
+                    mensagensErro = erros
                 });
             }
         }
-        
+
+        private IList<string> ValidaPaciente(Paciente paciente)
+        {
+            IList<string> mensagensDeErro = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(paciente.Nome))
+            {
+                mensagensDeErro.Add("Informe o nome do paciente.");
+            }
+
+            if (paciente.DataNascimento == null)
+            {
+                mensagensDeErro.Add("Informe a data de nascimento.");
+            }
+
+            return mensagensDeErro;
+        }
+
         [HttpGet]
         public ActionResult Editar(int id)
         {

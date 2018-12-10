@@ -61,7 +61,7 @@
             $scope.Consultas = d.data;
         },
         function (d) {
-            alert("Falha ao listar todos as consultas.");
+            alert("Falha ao listar todas as consultas.");
             console.log(d);
         });
     }
@@ -86,7 +86,7 @@
             if (d.data.success === true) {
                 limpaDadosConsulta();
                 abrePaginaLista();
-                alert("Consulta salva com sucesso!");
+                alert("Consulta agendada com sucesso!");
             }
             else {
                 console.log(d.data.mensagensErro);

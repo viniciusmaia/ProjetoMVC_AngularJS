@@ -14,7 +14,11 @@
         <input type="hidden" name="Id" value="{{Id}}"/>
         <div class="row">
             <input type="submit" class="btn btn-success" ng-click="salvaPaciente()" value="Salvar" />
-            @Html.ActionLink("Voltar para lista", "List", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Cancelar", "List", null, new { @class = "btn btn-danger" })
+        </div>
+        <div ng-repeat="mensagemDeErro in mensagensDeErro" class="alert alert-danger fade in alert-dismissible" style="margin-top: 15px;">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+            <strong>{{mensagemDeErro}}</strong>
         </div>
         <div class="form-group" style="margin-top: 20px;">
             <label for="inputNome">Nome</label>

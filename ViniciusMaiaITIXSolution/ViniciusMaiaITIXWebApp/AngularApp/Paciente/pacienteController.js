@@ -8,8 +8,8 @@
         $scope.Id = paciente.Id;
         $scope.Nome = paciente.Nome;
 
-        if (typeof consulta.DataNascimento !== 'undefined' && consulta.DataHorainicio !== null) {
-            $scope.DataNascimento = new Date(parseInt(consulta.DataNascimento.slice(6, -2)));
+        if (typeof paciente.DataNascimento !== 'undefined' && paciente.DataNascimento !== null) {
+            $scope.DataNascimento = new Date(parseInt(paciente.DataNascimento.slice(6, -2)));
         }
     }
 
@@ -22,7 +22,6 @@
         },
         function (d) {
             alert("Falha ao listar todos os pacientes.");
-            console.log(d);
         });
     }
 
@@ -32,26 +31,26 @@
             Nome: $scope.Nome,
             DataNascimento: $scope.DataNascimento
         }
-        var adicionarInformacoesPaciente = pacienteService.salvaPaciente(paciente);
+        var requestSalvarPaciente = pacienteService.salvaPaciente(paciente);
 
-        adicionarInformacoesPaciente.then(function (d) {
+        requestSalvarPaciente.then(function (d) {
             if (d.data.success === true) {
                 limpaDadosPaciente();
                 abrePaginaLista();
                 alert("Paciente salvo com sucesso!");
             }
             else {
-                alert(d.data.errorMessage);
+                $scope.mensagensDeErro = d.data.mensagensErro;
             }
         },
         function (d) {
-            alert("Falha ao adicionar paciente.");
+            $scope.mensagensDeErro = ["Ocorreu um erro inesperado ao salvar o paciente."];
         });
     };
 
     $scope.removePaciente = function (paciente) {
 
-        if (window.confirm('Tem certeza que deseja remover esse paciente?')) {
+        if (window.confirm('Tem certeza que deseja remover esse paciente? Caso o paciente possua consultas agendadas, elas também serão removidas.')) {
             var resultadoRemocaoPaciente = pacienteService.removePaciente(paciente);
 
             resultadoRemocaoPaciente.then(function (d) {
@@ -78,7 +77,8 @@
         window.location.href = '/Paciente/List';
     }
 
-    function limpaDadosPaciente(){
+    function limpaDadosPaciente() {
+        $scope.mensagensDeErro = null;
         $scope.Id = null;
         $scope.Nome = null;
         $scope.DataNascimento = null;

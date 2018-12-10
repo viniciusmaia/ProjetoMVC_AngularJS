@@ -14,7 +14,7 @@
         <input type="hidden" name="Id" value="{{IdConsulta}}"/>
         <div class="row" style="padding-left: 15px;">
             <input type="submit" class="btn btn-success" ng-click="salvaConsulta()" value="Salvar" />
-            @Html.ActionLink("Voltar para lista", "List", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Cancelar", "List", null, new { @class = "btn btn-danger" })
         </div>
         <div ng-repeat="mensagemDeErro in mensagensDeErro" class="alert alert-danger fade in alert-dismissible" style="margin-top: 15px;">
             <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
